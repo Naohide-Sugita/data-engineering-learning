@@ -2,13 +2,24 @@
 
 データエンジニアとして必要な知識領域を俯瞰し、Google Cloud の資格学習と資格外の基礎学習を一つのロードマップで管理するためのリポジトリです。
 
+## 目次
+
+- [管理方針](#管理方針)
+- [ステータス](#ステータス)
+- [Learning Roadmap](#learning-roadmap)
+- [進め方](#進め方)
+- [対象資格](#対象資格)
+- [学習ノート](#学習ノート)
+
 ## 管理方針
 
 * 学習テーマは資格ごとに分けず、データエンジニアリングの知識領域ごとに一度だけ定義する。
 * `Associate` は **Google Cloud Associate Data Practitioner** の学習で扱うテーマを示す。
 * `Professional` は **Google Cloud Professional Data Engineer** の学習で扱うテーマを示す。
 * `補完` は、資格学習だけでは不足するため別途学習するテーマを示す。
-* README と `learning-notes.md` では同じ項番を使用する。
+* README と `notes/` 配下の学習ノートでは同じ項番を使用する。
+
+
 
 ## ステータス
 
@@ -141,3 +152,18 @@
 
 * Google Cloud Associate Data Practitioner
 * Google Cloud Professional Data Engineer
+
+## 学習ノート
+
+- [1. データベース](notes/01-database.md)
+- [2. データモデリング](notes/02-data-modeling.md)
+- [3. データストレージ](notes/03-data-storage.md)
+- [4. DWH・分析基盤](notes/04-dwh-analytics-platform.md)
+- [5. データ取り込み・処理](notes/05-data-ingestion-processing.md)
+- [6. パイプライン設計](notes/06-pipeline-design.md)
+- [7. データ品質](notes/07-data-quality.md)
+- [8. 分析・性能](notes/08-analysis-performance.md)
+- [9. 分析・可視化](notes/09-analysis-visualization.md)
+- [10. AI・ML](notes/10-ai-ml.md)
+- [11. 運用・信頼性](notes/11-operations-reliability.md)
+- [12. セキュリティ・ガバナンス](notes/12-security-governance.md)

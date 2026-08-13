@@ -1,5 +1,11 @@
-# 9. •ªÍE‰Â‹‰»
+ï»¿# 9. åˆ†æãƒ»å¯è¦–åŒ–
+
+## ç›®æ¬¡
+
+- [9-1. Looker / Looker Studio](#9-1-looker--looker-studio)
+- [9-2. LookMLåŸºç¤](#9-2-lookmlåŸºç¤)
 
 ## 9-1. Looker / Looker Studio
 
-## 9-2. LookMLŠî‘b
+## 9-2. LookMLåŸºç¤
+
