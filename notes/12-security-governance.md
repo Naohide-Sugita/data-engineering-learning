@@ -1,4 +1,4 @@
-﻿# 12. セキュリティ・ガバナンス
+# 12. セキュリティ・ガバナンス
 
 ## 目次
 
@@ -15,11 +15,62 @@
 
 ## 12-1. IAM / 最小権限
 
+### Dataflowの主なIAMロール
+- Viewer：閲覧
+- Developer：ジョブ作成・更新・停止などの運用操作
+- Worker：Dataflow実行ノード用のサービスアカウント向け
+- Admin：広い権限を持つため、最小権限では必要性を検討する
+
+### BigQueryのIAM
+- IAM：誰に、どのリソースへの、どの操作権限を与えるか管理する
+- ユーザーやグループには必要最小限のロールだけを付与する
+- 暗号化方式は、誰がクエリできるかというアクセス制御の代わりにはならない
+- 「許可された人だけアクセス + 最小権限」→ IAM
+
 ## 12-2. アクセス制御
+
+### BigQueryのアクセス範囲
+- IAM：プロジェクト、データセット、テーブルなどの単位でアクセスを制御
+- Row Access Policy：行を制御
+- Policy Tags / Column-level Security：列を制御
+- Data masking：値をマスクして表示
+- Authorized View：基底テーブルを直接公開せず、ビューで定義した結果だけ共有
+
+### 限定データセットへのアクセス
+- BigQuery Data Viewer：データセットのデータを読み取る
+- BigQuery Job User：クエリジョブを実行する
+- 「特定データセットだけ参照」→ 対象データセットにData Viewer + プロジェクトにJob User
+
+### Row Access Policy
+- 地域・部署・担当者などの条件で、ユーザーごとに見える行を変える
+- 「ユーザーごとに見える行を変える」→ Row Access Policy
+
+### Authorized View
+- 基底テーブルへの直接アクセスを与えず、集計結果や特定列だけを継続共有する
+- 元データをコピーしないため同期管理が不要
+- 「限定したクエリ結果だけ共有」→ Authorized View
 
 ## 12-3. 暗号化
 
+### Cloud Storageの暗号鍵
+- GMEK：Googleが鍵の生成・保管・ローテーションを管理
+- CMEK：Cloud KMS上の鍵を利用者側で管理・制御
+- CSEK：利用者が鍵を生成・保管し、リクエスト時に提供
+
+**使い分け**
+- 運用負荷を最小化 → GMEK
+- 鍵を自分で管理・制御 → CMEK
+- 鍵素材まで完全に自前管理 → CSEK
+
+### BigQueryのAEAD暗号化
+- BigQuery SQL内で特定の値を暗号化・復号する
+- 鍵を失効・削除すれば、その鍵で暗号化した値を復号できなくできる
+- 「特定のデータ値を暗号化」→ AEAD
+
 ## 12-4. Cloud KMS / 鍵管理
+
+- Cloud KMS：暗号鍵の作成・管理・ローテーションなどを行うマネージドサービス
+- CMEKで利用する鍵の管理基盤として使う
 
 ## 12-5. データガバナンス
 
@@ -27,9 +78,32 @@
 
 ## 12-7. データ共有 / Analytics Hub
 
+### Analytics Hub / BigQuery Sharing
+- BigQueryデータを複製せず組織内外へ共有できる
+- データエクスチェンジとリスティングを作成し、利用者はサブスクライブする
+- パートナー別に共有対象を分けることができる
+- 「外部パートナーとBigQueryデータをコピーせず共有」→ Analytics Hub
+
+### 外部共有と細粒度アクセス制御
+- Analytics Hubは共有の仕組み
+- 行・列の制御はBigQuery側のアクセス制御と組み合わせる
+- 行 → Row Access Policy
+- 列 → Policy Tags / Column-level Security
+- 限定した結果 → Authorized View
+- 「外部共有 + コピーなし + 公開範囲を制御」→ Analytics Hub + BigQueryアクセス制御
+
 ## 12-8. データリネージ
 
 ## 12-9. ライフサイクル管理
 
 ## 12-10. 個人情報 / データマスキング / DLP
 
+### Sensitive Data Protection
+- PIIなどの機密データを検出する
+- マスキング、削除、置換などで匿名化できる
+- DeidentifyTemplateで匿名化ルールを再利用できる
+- 「機密情報を検出・匿名化して取り込む」→ Sensitive Data Protection
+
+### SQLインジェクション
+- ユーザー入力をSQL文へそのまま連結すると、意図しないSQLを実行される危険がある
+- 基本対策はパラメータ化クエリなどで入力値をSQLとして解釈させないこと
